@@ -4,7 +4,7 @@
 
 A simple "empty" egg that acts as a private SFTP storage share by utilizing Pterodactyl's built in SFTP system for servers. Sub-users can be added to the server by the owner to allow additional people to access the share. "Starting" the server performs no actions and it should be left off.
 
-You can access the SFTP server using your favorite SFTP client and the SFTP login information found under the "Settings" tab of the server.
+You can access the SFTP server using your favourite SFTP client and the SFTP login information found under the "Settings" tab of the server.
 
 ___
 
