@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "update_url": null,
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2024-06-02T14:41:01+00:00",
+    "name": "haste-server",
+    "author": "eggs@harryw.link",
+    "description": "Haste is an open-source pastebin software written in node.js, which is easily installable in any network. It can be backed by either redis or filesystem, and has a very easy adapter interface for other stores. A publicly available version can be found at hastebin.com",
+    "features": null,
+    "docker_images": {
+        "ghcr.io/ptero-eggs//yolks:nodejs_18": "ghcr.io/ptero-eggs//yolks:nodejs_18"
+    },
+    "file_denylist": [],
+    "startup": "npm start",
+    "config": {
+        "files": "{\r\n    \"config.js\": {\r\n        \"parser\": \"json\",\r\n        \"find\": {\r\n            \"port\": \"{{server.build.default.port}}\"\r\n        }\r\n    }\r\n}",
+        "logs": "{}",
+        "startup": "{\r\n    \"done\": \"listening on\"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "container": "node:18-bookworm-slim",
+            "entrypoint": "bash",
+            "script": "#!/bin/bash\r\n\r\napt update\r\napt install -y git curl\r\nmkdir -p /mnt/server\r\ncd /mnt/server\r\n\r\ngit clone https://github.com/toptal/haste-server\r\ncd haste-server\r\nmv * /mnt/server\r\ncd ..\r\nrm -rf haste-server\r\nnpm install\r\n\r\nexit 0"
+        }
+    },
+    "variables": []
+}

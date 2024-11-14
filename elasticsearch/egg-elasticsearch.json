@@ -1,0 +1,52 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "update_url": null,
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2024-06-02T14:40:58+00:00",
+    "name": "Elasticsearch",
+    "author": "dominic@stilma.net",
+    "description": "Elasticsearch is a distributed, RESTful search and analytics engine capable of addressing a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data for lightning fast search, fine‑tuned relevancy, and powerful analytics that scale with ease.",
+    "features": null,
+    "docker_images": {
+        "ghcr.io/ptero-eggs//yolks:debian": "ghcr.io/ptero-eggs//yolks:debian"
+    },
+    "file_denylist": [],
+    "startup": "./bin/elasticsearch -E network.host=0.0.0.0 -E http.port={{SERVER_PORT}} -E discovery.type={{DISCOVERY_SEED_HOSTS}}",
+    "config": {
+        "files": "{}",
+        "logs": "{}",
+        "startup": "{\r\n    \"done\": \"started\"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "container": "ghcr.io/ptero-eggs//installers:debian",
+            "entrypoint": "bash",
+            "script": "#!/bin/bash\r\n# Elasticsearch Installation Script\r\n#\r\n# Server Files: /mnt/server\r\n\r\n## Install Requirements\r\n\r\ncd /mnt/server\r\n\r\n## Install Elasticsearch\r\nARCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] \u0026\u0026 echo \"x86_64\" || echo \"aarch64\")\r\ncurl -sSL -o elasticsearch.tar.gz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$VERSION-linux-${ARCH}.tar.gz\r\n\r\ntar -zxf  elasticsearch.tar.gz --directory /mnt/server\r\nmv elasticsearch*/* /mnt/server\r\nrm  elasticsearch.tar.gz\r\nrm -R elasticsearch-*\r\n\r\n## Finish command\r\necho \"All done! Just start it up :)\""
+        }
+    },
+    "variables": [
+        {
+            "name": "Discovery Seed Hosts",
+            "description": "Please keep default if you are unsure.",
+            "env_variable": "DISCOVERY_SEED_HOSTS",
+            "default_value": "single-node",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required",
+            "field_type": "text"
+        },
+        {
+            "name": "Elasticsearch Version",
+            "description": "Go to https://www.elastic.co/downloads/elasticsearch and look at the version at the top.",
+            "env_variable": "VERSION",
+            "default_value": "8.13.0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}

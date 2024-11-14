@@ -1,0 +1,46 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "update_url": null,
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2024-06-02T14:40:54+00:00",
+    "name": "RabbitMQ",
+    "author": "p.zarrad@outlook.de",
+    "description": "RabbitMQ is a feature rich, multi-protocol messaging broker.",
+    "features": null,
+    "docker_images": {
+        "ghcr.io/ptero-eggs//yolks:erlang_22": "ghcr.io/ptero-eggs//yolks:erlang_22",
+        "ghcr.io/ptero-eggs//yolks:erlang_23": "ghcr.io/ptero-eggs//yolks:erlang_23",
+        "ghcr.io/ptero-eggs//yolks:erlang_24": "ghcr.io/ptero-eggs//yolks:erlang_24",
+        "ghcr.io/ptero-eggs//yolks:erlang_25": "ghcr.io/ptero-eggs//yolks:erlang_25",
+        "ghcr.io/ptero-eggs//yolks:erlang_26": "ghcr.io/ptero-eggs//yolks:erlang_26"
+    },
+    "file_denylist": [],
+    "startup": "./sbin/rabbitmq-server",
+    "config": {
+        "files": "{\r\n    \"etc/rabbitmq/rabbitmq.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"listeners.tcp.default\": \"listeners.tcp.default    = 0.0.0.0:{{server.build.default.port}}\"\r\n        }\r\n    }\r\n}",
+        "logs": "{}",
+        "startup": "{\r\n    \"done\": \" completed with\"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "container": "ghcr.io/ptero-eggs//installers:alpine",
+            "entrypoint": "ash",
+            "script": "#!/bin/sh\r\n# Switch to mounted directory\r\ncd /mnt/server\r\n# Update and install xz\r\napk update\r\napk add xz\r\n# Cleanup previous install if available but leave etc untouched\r\nfind . -maxdepth 1 ! -name \"etc\" ! -name . -exec rm -rf {} \\;\r\n# Download and extract RabbitMQ\r\nversion=${RABBITMQ_VERSION}\r\nif [ \"$version\" = \"latest\" ]; then version=$(curl --silent \"https://api.github.com/repos/rabbitmq/rabbitmq-server/releases/latest\" | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\\1/' | cut -c2-); fi\r\ncurl -L https://github.com/rabbitmq/rabbitmq-server/releases/download/v${version}/rabbitmq-server-generic-unix-${version}.tar.xz --output rabbitmq.tar.xz\r\nxz -v -d rabbitmq.tar.xz \u0026\u0026 tar -xvf rabbitmq.tar\r\nmv -n rabbitmq_server-*/* ./\r\nrm -rf rabbitmq.tar rabbitmq_server-*/\r\n# If there is no config, download default one\r\nif [ ! -f \"etc/rabbitmq/rabbitmq.conf\" ]; then mkdir -p etc/rabbitmq/ \u0026\u0026 curl -L https://raw.githubusercontent.com/parkervcp/eggs/master/software/rabbitmq/rabbitmq.conf --output etc/rabbitmq/rabbitmq.conf; fi"
+        }
+    },
+    "variables": [
+        {
+            "name": "RabbitMQ Version",
+            "description": "The version of RabbitMQ to install. By default the latest version is being installed.",
+            "env_variable": "RABBITMQ_VERSION",
+            "default_value": "latest",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}
