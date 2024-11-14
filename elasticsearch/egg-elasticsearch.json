@@ -10,7 +10,7 @@
     "description": "Elasticsearch is a distributed, RESTful search and analytics engine capable of addressing a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data for lightning fast search, fine‑tuned relevancy, and powerful analytics that scale with ease.",
     "features": null,
     "docker_images": {
-        "ghcr.io/parkervcp/yolks:debian": "ghcr.io/parkervcp/yolks:debian"
+        "ghcr.io/ptero-eggs//yolks:debian": "ghcr.io/ptero-eggs//yolks:debian"
     },
     "file_denylist": [],
     "startup": "./bin/elasticsearch -E network.host=0.0.0.0 -E http.port={{SERVER_PORT}} -E discovery.type={{DISCOVERY_SEED_HOSTS}}",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "container": "ghcr.io/parkervcp/installers:debian",
+            "container": "ghcr.io/ptero-eggs//installers:debian",
             "entrypoint": "bash",
             "script": "#!/bin/bash\r\n# Elasticsearch Installation Script\r\n#\r\n# Server Files: /mnt/server\r\n\r\n## Install Requirements\r\n\r\ncd /mnt/server\r\n\r\n## Install Elasticsearch\r\nARCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] \u0026\u0026 echo \"x86_64\" || echo \"aarch64\")\r\ncurl -sSL -o elasticsearch.tar.gz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$VERSION-linux-${ARCH}.tar.gz\r\n\r\ntar -zxf  elasticsearch.tar.gz --directory /mnt/server\r\nmv elasticsearch*/* /mnt/server\r\nrm  elasticsearch.tar.gz\r\nrm -R elasticsearch-*\r\n\r\n## Finish command\r\necho \"All done! Just start it up :)\""
         }

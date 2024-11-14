@@ -10,7 +10,7 @@
     "description": "This egg installs a LanguageTool server\r\n\r\nLanguageTool is an Open Source proofreading software for English, French, German, Polish, Russian, and more than 20 other languages. It finds many errors that a simple spell checker cannot find.\r\n\r\nView https://languagetool.org for more information.",
     "features": null,
     "docker_images": {
-        "ghcr.io/parkervcp/yolks:java_17": "ghcr.io/parkervcp/yolks:java_17"
+        "ghcr.io/ptero-eggs//yolks:java_17": "ghcr.io/ptero-eggs//yolks:java_17"
     },
     "file_denylist": [],
     "startup": "java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port {{SERVER_PORT}} --allow-origin --public --config config.properties",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "container": "ghcr.io/parkervcp/installers:alpine",
+            "container": "ghcr.io/ptero-eggs//installers:alpine",
             "entrypoint": "ash",
             "script": "#!/bin/ash\r\napk add --no-cache unzip # to make shure the unzipper is working properly\r\nmkdir -p /mnt/server\r\nmkdir -p /mnt/server/models\r\ntouch config.properties\r\n\r\n# if TRAIN_MODELS has content install them\r\nif [ -n TRAIN_MODELS ]; then\r\n\r\n    content=$(curl -L https://languagetool.org/download/ngram-data/)\r\n\r\n    links=$(echo \"$content\" | grep -o '\u003ca href=\"[^\"]*\\.zip\"\u003e' | sed 's/\u003ca href=\"//' | sed 's/\"\u003e//')\r\n    echo $links\r\n\r\n    cd /mnt/server/models\r\n    for model in $TRAIN_MODELS; do\r\n        echo \"$model\"\r\n        for link in $links; do\r\n            # echo \"    $link\"\r\n            if [[ $link == *\"-$model-\"* ]]; then\r\n                fullLink=\"https://languagetool.org/download/ngram-data/$link\"\r\n                echo \"Downloading $fullLink\"\r\n                echo \"this could take some while\"\r\n                curl $fullLink --output $model.zip\r\n                echo \"unziping $model.zip\"\r\n                unzip $model.zip\r\n                rm $model.zip\r\n            fi\r\n        done\r\n    done\r\nfi\r\n\r\n# main languagetool install\r\ncd /mnt/server\r\n\r\necho \"downloading languagetool\"\r\ncurl https://languagetool.org/download/LanguageTool-stable.zip --output download.zip\r\necho unziping\r\nunzip download.zip\r\necho moving files\r\n\r\ncp -r LanguageTool-*/* .\r\n\r\nrm -rf LanguageTool-*\r\nrm download.zip -rf\r\n\r\necho Finished install"
         }

@@ -10,7 +10,7 @@
     "description": "Uptime Kuma is an easy-to-use self-hosted monitoring tool.",
     "features": null,
     "docker_images": {
-        "ghcr.io/parkervcp/apps:uptimekuma": "ghcr.io/parkervcp/apps:uptimekuma"
+        "ghcr.io/ptero-eggs//apps:uptimekuma": "ghcr.io/ptero-eggs//apps:uptimekuma"
     },
     "file_denylist": [],
     "startup": "if [[ -d .git ]] \u0026\u0026 [[ {{AUTO_UPDATE}} == \"1\" ]]; then npm run setup; fi; /usr/local/bin/node /home/container/server/server.js --port={{SERVER_PORT}}",
