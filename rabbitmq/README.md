@@ -10,7 +10,7 @@ Follow the common egg installation guide to install the egg on your Pterodactyl 
 When setting up a server, the latest RabbitMQ version will be used by default.
 
 With pretty new and old versions of RabbitMQ, you might have to adjust the used Erlang version.
-This can be archived by adjusting the version number of the used image (e. g. `ghcr.io/pterodactyl/yolks:erlang_22` instead of `ghcr.io/ptero-eggs//yolks:erlang_24`).
+This can be archived by adjusting the version number of the used image (e. g. `ghcr.io/pterodactyl/yolks:erlang_22` instead of `ghcr.io/ptero-eggs/yolks:erlang_24`).
 
 The latest version as of now requires you to use atleast ghcr.io/pterodactyl/yolks:erlang_25
 

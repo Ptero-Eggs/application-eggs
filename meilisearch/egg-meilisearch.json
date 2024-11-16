@@ -10,7 +10,7 @@
     "description": "A lightning-fast search engine that fits effortlessly into your apps, websites, and workflow.",
     "features": null,
     "docker_images": {
-        "ghcr.io/ptero-eggs//yolks:debian": "ghcr.io/ptero-eggs//yolks:debian"
+        "ghcr.io/ptero-eggs/yolks:debian": "ghcr.io/ptero-eggs/yolks:debian"
     },
     "file_denylist": [],
     "startup": "./meilisearch --http-addr \"0.0.0.0:{{SERVER_PORT}}\"  --max-indexing-memory=\"{{SERVER_MEMORY}}mb\" $([ \"$NO_ANALYTICS\" -eq 1 ] \u0026\u0026 echo \"--no-analytics\")",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "container": "ghcr.io/ptero-eggs//installers:debian",
+            "container": "ghcr.io/ptero-eggs/installers:debian",
             "entrypoint": "bash",
             "script": "#!/bin/bash\r\n\r\n## get release info and download links\r\nLATEST_JSON=$(curl --silent \"https://api.github.com/repos/meilisearch/meilisearch/releases/latest\")\r\nRELEASES=$(curl --silent \"https://api.github.com/repos/meilisearch/meilisearch/releases\")\r\nMATCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] \u0026\u0026 echo \"linux-amd64\" || echo \"linux-aarch64\")\r\n\r\nif [ -z \"${VERSION}\" ] || [ \"${VERSION}\" == \"latest\" ]; then\r\n    DOWNLOAD_URL=$(echo ${LATEST_JSON} | jq .assets | jq -r .[].browser_download_url | grep -i ${MATCH})\r\nelse\r\n    VERSION_CHECK=$(echo ${RELEASES} | jq -r --arg VERSION \"${VERSION}\" '.[] | select(.tag_name==$VERSION) | .tag_name')\r\n    if [ \"${VERSION}\" == \"${VERSION_CHECK}\" ]; then\r\n        DOWNLOAD_URL=$(echo ${RELEASES} | jq -r --arg VERSION \"${VERSION}\" '.[] | select(.tag_name==$VERSION) | .assets[].browser_download_url' | grep -i ${MATCH})\r\n    else\r\n        echo -e \"defaulting to latest release\"\r\n        DOWNLOAD_URL=$(echo ${LATEST_JSON} | jq .assets | jq -r .[].browser_download_url)\r\n    fi\r\nfi\r\n\r\nmkdir -p /mnt/server\r\ncd /mnt/server\r\n\r\n## Config file\r\nFILE=/mnt/server/config.toml\r\nif [ -f \"$FILE\" ]; then\r\n    echo \"Config file exits\"\r\nelse \r\n    echo \"Config does not exist. Making one\"\r\n    curl -sSL -o config.toml https://raw.githubusercontent.com/meilisearch/meilisearch/latest/config.toml\r\nfi\r\n\r\ncurl -sSL -o meilisearch ${DOWNLOAD_URL}\r\nchmod +x meilisearch\r\n\r\n# Make the needed directory's \r\nmkdir -p /mnt/server/dumps\r\nmkdir -p /mnt/server/data.ms\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\""
         }
