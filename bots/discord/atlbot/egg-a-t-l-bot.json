@@ -1,0 +1,52 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "update_url": null,
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2024-06-01T19:44:10+00:00",
+    "name": "ATLBot",
+    "author": "jfeldt19@gmail.com",
+    "description": "ATLbot in ptero\r\n\r\nhttps://github.com/ATLauncher/discord-bot/",
+    "features": null,
+    "docker_images": {
+        "Nodejs 16": "ghcr.io/ptero-eggs/yolks:node_16"
+    },
+    "file_denylist": [],
+    "startup": "npm run start",
+    "config": {
+        "files": "{\r\n    \"config/local.json\": {\r\n        \"parser\": \"json\",\r\n        \"find\": {\r\n            \"discord.client_token\": \"{{server.build.env.CLIENT_TOKEN}}\",\r\n            \"logging.level\": \"debug\"\r\n        }\r\n    }\r\n}",
+        "logs": "{}",
+        "startup": "{\r\n    \"done\": \"Bot started\"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "container": "node:16-bookworm",
+            "entrypoint": "bash",
+            "script": "#!/bin/bash\r\n\r\napt update\r\napt -y install git openssl\r\n\r\ncd /mnt/server\r\nif [[ -d .git/ ]]; then\r\n    git pull\r\nelse\r\n    git clone https://github.com/ATLauncher/discord-bot.git .  \r\nfi\r\n\r\necho '{}' \u003e config/local.json\r\n\r\nnpm install --production\r\n\r\nnpm run build\r\n\r\nrm Dockerfile\r\nrm CONTRIBUTING.md\r\nrm README.md\r\nrm /config/.gitignore\r\nrm CODE_OF_CONDUCT.md\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\""
+        }
+    },
+    "variables": [
+        {
+            "name": "client_token",
+            "description": "Get a discord token at https://discordapp.com/developers/",
+            "env_variable": "CLIENT_TOKEN",
+            "default_value": "get_your_own_token_from_discord_",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:75",
+            "field_type": "text"
+        },
+        {
+            "name": "Node Environment",
+            "description": "The node environment variable.\r\n\r\nNeeds to stay at \"development\" to log to console.",
+            "env_variable": "NODE_ENV",
+            "default_value": "development",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}

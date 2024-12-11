@@ -1,0 +1,42 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "update_url": null,
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2024-06-01T19:44:16+00:00",
+    "name": "JTS3ServerMod",
+    "author": "teamwuffy@gmail.com",
+    "description": "Setup:\r\n- Install the latest version\r\n- Go into config/server1 and edit JTS3ServerMod_server.cfg\r\n- Save and start the server\r\n\r\nAuthor: https://www.stefan1200.de/forum/index.php?topic=2.0",
+    "features": null,
+    "docker_images": {
+        "ghcr.io/pterodactyl/yolks:java_8": "ghcr.io/pterodactyl/yolks:java_8"
+    },
+    "file_denylist": [],
+    "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar JTS3ServerMod.jar",
+    "config": {
+        "files": "{}",
+        "logs": "{}",
+        "startup": "{\r\n    \"done\": \"Successful connected to \"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "container": "ghcr.io/ptero-eggs/installers:debian",
+            "entrypoint": "bash",
+            "script": "#!/bin/bash\r\n# JTS3ServerMod\r\n#\r\n# Server Files: /mnt/server\r\n# All required packages are installed in the used install image ghcr.io/ptero-eggs/installers:debian\r\n\r\nexport HOME=/mnt/server\r\nmkdir -p /mnt/server\r\ncd /mnt/server\r\n\r\nif [ -z \"$SERVER_VERSION\" ] || [ \"$SERVER_VERSION\" == \"latest\" ]; then\r\n  echo -e \"Downloading latest version with curl -L \"https://www.stefan1200.de/dlrequest.php?file=jts3servermod \u0026\r\n  type=.zip\" -o JTS3ServerMod.zip\"\r\n  curl -L \"https://www.stefan1200.de/dlrequest.php?file=jts3servermod\u0026type=.zip\" -o JTS3ServerMod.zip\r\nelse\r\n  echo -e \"running curl -L \"https://www.stefan1200.de/downloads/JTS3ServerMod_$SERVER_VERSION.zip\" -o JTS3ServerMod.zip\"\r\n  curl -L \"https://www.stefan1200.de/downloads/JTS3ServerMod_$SERVER_VERSION.zip\" -o JTS3ServerMod.zip\r\nfi\r\n\r\n# no need to continue if we don't have an archive\r\nif [ ! -f JTS3ServerMod.zip ]; then\r\n  echo \"JTS3ServerMod.zip not found. Something went wrong. Exiting\"\r\n  exit 2\r\nfi\r\n\r\nunzip JTS3ServerMod.zip\r\nrm JTS3ServerMod.zip JTS3ServerMod-Windows.exe JTS3ServerMod-Windows_NoWindow.exe jts3servermod_startscript.sh\r\necho -e \"Installation completed.\\nConfiguration of the server must be done in the config folder to proceed.\""
+        }
+    },
+    "variables": [
+        {
+            "name": "Version",
+            "description": "Version to download. Use latest to install latest version",
+            "env_variable": "SERVER_VERSION",
+            "default_value": "latest",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}
