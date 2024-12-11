@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "update_url": null,
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2024-06-01T19:44:11+00:00",
+    "name": "Big Brother Bot",
+    "author": "parker@parkervcp.com",
+    "description": "Big Brother Bot B3 is a complete and total server administration package for online games. B3 is designed primarily to keep your server free from the derelicts of online gaming, but offers more, much more.\r\n\r\nhttps://github.com/BigBrotherBot/big-brother-bot",
+    "features": null,
+    "docker_images": {
+        "ghcr.io/ptero-eggs/yolks:python_2.7": "ghcr.io/ptero-eggs/yolks:python_2.7"
+    },
+    "file_denylist": [],
+    "startup": "python b3_run.py",
+    "config": {
+        "files": "{}",
+        "logs": "{}",
+        "startup": "{\r\n    \"done\": \"No idea what to put here\"\r\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "container": "python:2.7-slim",
+            "entrypoint": "bash",
+            "script": "#!/bin/bash\r\n# Pixel Bot Installation Script\r\n#\r\n# Server Files: /mnt/server\r\napt update\r\napt -y install git\r\n\r\ncd /mnt/server\r\n\r\necho \"Cloning pixel-bot repo\"\r\ngit clone https://github.com/BigBrotherBot/big-brother-bot.git .\r\n\r\necho \"Installing python requirements into folder\"\r\npip install -U --target /mnt/server -r requirements.txt\r\npip install -U --target /mnt/server paramiko\r\n\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\""
+        }
+    },
+    "variables": []
+}
