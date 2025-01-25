@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-01-25T12:41:15+01:00",
+    "name": "AIOStreams",
+    "author": "contact@patatje.dev",
+    "description": "An egg to easily run the Stremio addon, AIOStreams, on a Pterodactyl panel.",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/ptero-eggs\/yolks:nodejs_22": "ghcr.io\/ptero-eggs\/yolks:nodejs_22"
+    },
+    "file_denylist": [],
+    "startup": "npm run start:addon",
+    "config": {
+        "files": "{\r\n    \".env\": {\r\n        \"parser\": \"properties\",\r\n        \"find\": {\r\n            \"PORT\": \"{{server.build.default.port}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"Listening on port\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\napt update\r\napt install -y git\r\n\r\nnpm install npm@latest -g\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\ngit clone https:\/\/github.com\/Viren070\/AIOStreams.git .\r\n\r\nnpm install\r\n\r\nnpm run build",
+            "container": "node:22-bookworm-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": []
+}
