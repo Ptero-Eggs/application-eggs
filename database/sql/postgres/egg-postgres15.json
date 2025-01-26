@@ -5,12 +5,12 @@
         "update_url": null
     },
     "exported_at": "2025-01-26T01:12:12+00:00",
-    "name": "Postgres 16",
+    "name": "Postgres 15",
     "author": "parker@parkervcp.com",
     "description": "A default Postgres install that is not really editable.",
     "features": [],
     "docker_images": {
-        "ghcr.io\/ptero-eggs\/yolks:postgres_16": "ghcr.io\/ptero-eggs\/yolks:postgres_16"
+        "ghcr.io\/ptero-eggs\/yolks:postgres_15": "ghcr.io\/ptero-eggs\/yolks:postgres_15"
     },
     "file_denylist": [],
     "startup": "postgres  -D \/home\/container\/postgres_db\/ & wait-port;  psql -h127.0.0.1 -p{{SERVER_PORT}} --dbname postgres",
@@ -23,7 +23,7 @@
     "scripts": {
         "installation": {
             "script": "#! \/bin\/ash\r\nadduser -D -h \/home\/container container\r\n\r\nchown -R container: \/mnt\/server\/\r\n\r\nsu container -c 'initdb -D \/mnt\/server\/postgres_db\/ -A md5 -U \"$PGUSER\" --pwfile=<(echo \"$PGPASSWORD\")'\r\n\r\nmkdir -p \/mnt\/server\/postgres_db\/run\/\r\n\r\n## Add default \"allow from all\" auth rule to pg_hba\r\nif ! grep -q \"# Custom rules\" \"\/mnt\/server\/postgres_db\/pg_hba.conf\"; then\r\n    echo -e \"# Custom rules\\nhost    all             all             0.0.0.0\/0               md5\" >> \"\/mnt\/server\/postgres_db\/pg_hba.conf\"\r\nfi\r\n\r\necho -e \"Done\"",
-            "container": "postgres:16-alpine",
+            "container": "postgres:15-alpine",
             "entrypoint": "bash"
         }
     },
