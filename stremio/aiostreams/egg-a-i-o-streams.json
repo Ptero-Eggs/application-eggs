@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# Install git\r\napt update\r\napt install -y git\r\n\r\n# Update npm\r\nnpm install npm@latest -g\r\n\r\n# Clear \/mnt\/server if it exists (e.g., from a previous installation), or create it if missing\r\nif  [ -d \"\/mt\/server\" ]; then\r\n  rm -rf \/mnt\/server\/*\r\nelse\r\n  mkdir -p \/mnt\/server\r\nfi\r\n\r\n# Clone the project into \/mnt\/server\r\ncd \/mnt\/server\r\ngit clone https:\/\/github.com\/Viren070\/AIOStreams.git .\r\n\r\n# Install all node dependencies\r\nnpm install\r\n\r\n# Build the project\r\nnpm run build",
+            "script": "#!\/bin\/bash\r\n# Install git\r\napt update\r\napt install -y git\r\n\r\n# Update npm\r\nnpm install npm@latest -g\r\n\r\n# Clear \/mnt\/server if it exists (e.g., from a previous installation), or create it if missing\r\nif  [ -d \"\/mnt\/server\" ]; then\r\n  rm -rf \/mnt\/server\/*\r\nelse\r\n  mkdir -p \/mnt\/server\r\nfi\r\n\r\n# Clone the project into \/mnt\/server\r\ncd \/mnt\/server\r\ngit clone https:\/\/github.com\/Viren070\/AIOStreams.git .\r\n\r\n# Install all node dependencies\r\nnpm install\r\n\r\n# Build the project\r\nnpm run build",
             "container": "node:22-bookworm-slim",
             "entrypoint": "bash"
         }
