@@ -1,0 +1,35 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-02-10T11:12:53+00:00",
+    "name": "MariaDB",
+    "author": "danielb@purpleflaghosting.com",
+    "description": "MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system, intended to remain free and open-source software under the GNU General Public.",
+    "features": null,
+    "docker_images": {
+        "MariaDB 11.6": "ghcr.io\/ptero-eggs\/yolks:mariadb_11.6",
+        "MariaDB 11.4 LTS": "ghcr.io\/ptero-eggs\/yolks:mariadb_11.4",
+        "MariaDB 10.11 LTS": "ghcr.io\/ptero-eggs\/yolks:mariadb_10.11",
+        "MariaDB 10.6 LTS": "ghcr.io\/ptero-eggs\/yolks:mariadb_10.6",
+        "MariaDB 10.5 LTS": "ghcr.io\/ptero-eggs\/yolks:mariadb_10.5"
+    },
+    "file_denylist": [],
+    "startup": "${MARIADB_EXECUTABLE}",
+    "config": {
+        "files": "{\r\n  \".my.cnf\": {\r\n    \"parser\": \"ini\",\r\n    \"find\": {\r\n      \"mysqld.port\": \"{{server.build.default.port}}\",\r\n      \"client.port\": \"{{server.build.default.port}}\",\r\n      \"mysqld.bind-address\": \"0.0.0.0\",\r\n      \"mysqld.pid-file\": \"\/home\/container\/run\/mysqld\/mysqld.pid\",\r\n      \"mysqld.socket\": \"\/home\/container\/run\/mysqld\/mysqld.sock\",\r\n      \"client.socket\": \"\/home\/container\/run\/mysqld\/mysqld.sock\",\r\n      \"mysqld.general_log_file\": \"\/home\/container\/log\/mysql\/mysql.log\",\r\n      \"client.user\": \"container\"\r\n    }\r\n  }\r\n}",
+        "startup": "{\r\n    \"done\": \"ready for connections.\"\r\n}",
+        "logs": "{}",
+        "stop": "shutdown; exit;"
+    },
+    "scripts": {
+        "installation": {
+            "script": "# Nothing here - All the magic is in the entrypoint.sh\r\necho \"Installation complete\"",
+            "container": "alpine",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": []
+}
