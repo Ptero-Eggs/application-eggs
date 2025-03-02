@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2025-02-24T23:09:01+01:00",
+    "exported_at": "2025-03-02T08:28:53+01:00",
     "name": "DoritoBot",
     "author": "michael@itzminey.dev",
     "description": "A general purpose and moderation bot for discord\r\n\r\nhttps:\/\/github.com\/itzMiney\/DoritoBot",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# DoritoBot Installation Script\r\n\r\napt update\r\napt install -y git mariadb-client\r\n\r\necho -e \"Updating npm. Please wait...\"\r\nnpm install npm@latest --location=global\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\ngit clone https:\/\/github.com\/itzMiney\/DoritoBot.git .\r\n\r\necho \"Installing Node.js packages...\"\r\nif [ -f package-lock.json ]; then\r\n  \/usr\/local\/bin\/npm ci \r\nelse\r\n  \/usr\/local\/bin\/npm install\r\nfi\r\n\r\nif [ -f \/mnt\/server\/db_migrations\/initial-schema.sql ]; then\r\n  echo \"Testing database connection...\"\r\n  if ! \/usr\/bin\/mariadb -h \"${DB_HOST}\" -u \"${DB_USER}\" -p\"${DB_PASSWORD}\" -e \"USE ${DB_NAME};\" &>\/dev\/null; then\r\n    echo \"Error: Unable to connect to the database. Check your credentials.\"\r\n    exit 1\r\n  fi\r\n\r\n  echo \"Importing initial schema...\"\r\n  \/usr\/bin\/mariadb -h \"${DB_HOST}\" -u \"${DB_USER}\" -p\"${DB_PASSWORD}\" \"${DB_NAME}\" < \/mnt\/server\/db_migrations\/initial-schema.sql\r\nelse\r\n  echo \"Error: initial-schema.sql not found.\"\r\n  exit 1\r\nfi\r\n\r\necho -e \"Installation complete\"\r\nexit 0",
+            "script": "#!\/bin\/bash\r\n# DoritoBot Installation Script\r\n\r\napt update\r\napt install -y git mariadb-client wget curl ca-certificates\r\n\r\necho -e \"Updating npm. Please wait...\"\r\nnpm install npm@latest --location=global\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\ngit clone https:\/\/github.com\/itzMiney\/DoritoBot.git .\r\n\r\necho \"Installing Node.js packages...\"\r\nif [ -f package-lock.json ]; then\r\n  \/usr\/local\/bin\/npm ci \r\nelse\r\n  \/usr\/local\/bin\/npm install\r\nfi\r\n\r\necho \"Installing Chromium browser for puppeteer...\"\r\nnpx puppeteer browsers install chrome\r\n\r\nif [ -f \/mnt\/server\/db_migrations\/initial-schema.sql ]; then\r\n  echo \"Testing database connection...\"\r\n  if ! \/usr\/bin\/mariadb -h \"${DB_HOST}\" -u \"${DB_USER}\" -p\"${DB_PASSWORD}\" -e \"USE ${DB_NAME};\" &>\/dev\/null; then\r\n    echo \"Error: Unable to connect to the database. Check your credentials.\"\r\n    exit 1\r\n  fi\r\n\r\n  echo \"Importing initial schema...\"\r\n  \/usr\/bin\/mariadb -h \"${DB_HOST}\" -u \"${DB_USER}\" -p\"${DB_PASSWORD}\" \"${DB_NAME}\" < \/mnt\/server\/db_migrations\/initial-schema.sql\r\nelse\r\n  echo \"Error: initial-schema.sql not found.\"\r\n  exit 1\r\nfi\r\n\r\necho -e \"Installation complete\"\r\nexit 0",
             "container": "node:22-bookworm-slim",
             "entrypoint": "bash"
         }
