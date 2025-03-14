@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2025-02-05T17:03:44+01:00",
+    "exported_at": "2025-03-14T17:02:30+01:00",
     "name": "AIOStreams",
     "author": "contact@patatje.dev",
     "description": "An egg to easily run the Stremio addon, AIOStreams, on a Pterodactyl panel.",
@@ -27,5 +27,546 @@
             "entrypoint": "bash"
         }
     },
-    "variables": []
+    "variables": [
+        {
+            "name": "Addon Name",
+            "description": "",
+            "env_variable": "ADDON_NAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Addon ID",
+            "description": "",
+            "env_variable": "ADDON_ID",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Deterministic Addon ID",
+            "description": "Set to true to generate a deterministic addon ID based on the configuration, useful for apps like Vidi that require a different addon ID for multiple installations.",
+            "env_variable": "DETERMINISTIC_ADDON_ID",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "in:,true,false",
+            "field_type": "text"
+        },
+        {
+            "name": "Secret Key",
+            "description": "The secret key used for encrypting the addon's configuration\r\nYou must use a 64 character hex string.",
+            "env_variable": "SECRET_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:64|min:64",
+            "field_type": "text"
+        },
+        {
+            "name": "Api Key",
+            "description": "The API key used to install and use the addon, leave empty to disable API key requirement.",
+            "env_variable": "API_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Show Die",
+            "description": "Controls whether the addon shows a dice emoji in its stream results.",
+            "env_variable": "SHOW_DIE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "in:,true,false",
+            "field_type": "text"
+        },
+        {
+            "name": "Log Level",
+            "description": "The log level of the addon.",
+            "env_variable": "LOG_LEVEL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "in:,debug,info,warn,error",
+            "field_type": "text"
+        },
+        {
+            "name": "Log Format",
+            "description": "The log format of the addon.",
+            "env_variable": "LOG_FORMAT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|in:,json,text",
+            "field_type": "text"
+        },
+        {
+            "name": "Log Sensitive Info",
+            "description": "Whether to log sensitive information like API keys.",
+            "env_variable": "LOG_SENSITIVE_INFO",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "in:,true,false",
+            "field_type": "text"
+        },
+        {
+            "name": "Addon Proxy",
+            "description": "The proxy URL to use for all requests made to upstream addons. You only need to configure this if the server you are hosting the addon on is blocked by Torrentio. e.g. http:\/\/warp:1080 from https:\/\/github.com\/cmj2002\/warp-docker.",
+            "env_variable": "ADDON_PROXY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Addon Proxy Config",
+            "description": "Optionally, configure what domains to proxy. Use a comma separated list of rules in the format string:boolean. The later in the list, the higher the priority. You can use wildcards (*) to match multiple domains. e.g. \"*:false,*.strem.fun:true\". This would only proxy requests to the strem.fun domain and any subdomains of it.",
+            "env_variable": "ADDON_PROXY_CONFIG",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Max Addons",
+            "description": "The max number of addons that are allowed to be used through a single instance of the addon.",
+            "env_variable": "MAX_ADDONS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Max Keyword Filters",
+            "description": "The maximum number of keyword filters that can be used in a single instance of the addon.",
+            "env_variable": "MAX_KEYWORD_FILTERS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Max Movie Size",
+            "description": "To control the maximum size the size filter sliders can go up to in bytes.",
+            "env_variable": "MAX_MOVIE_SIZE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Max Episode Size",
+            "description": "To control the maximum size the size filter sliders can go up to in bytes.",
+            "env_variable": "MAX_EPISODE_SIZE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Max Timeout",
+            "description": "The maximum timeout that can be set for an addon through the override option.",
+            "env_variable": "MAX_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Min Timeout",
+            "description": "The minimum timeout that can be set for an addon through the override option.",
+            "env_variable": "MIN_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "MediaFlow IP Timeout",
+            "description": "The timeout for requesting the IP from MediaFlow. When we fail to get the IP from MediaFlow, no streams will be fetched and only an error message will be shown.",
+            "env_variable": "MEDIAFLOW_IP_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Default MediaFlow URL",
+            "description": "If you set a default mediaflow configuration, it will force the addon to use MediaFlow for all instances. A user can override the mediaflow instance to use a different one.",
+            "env_variable": "DEFAULT_MEDIAFLOW_URL",
+            "default_value": "",
+            "user_viewable": false,
+            "user_editable": false,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default MediaFlow API Password",
+            "description": "",
+            "env_variable": "DEFAULT_MEDIAFLOW_API_PASSWORD",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default MediaFlow Public IP",
+            "description": "",
+            "env_variable": "DEFAULT_MEDIAFLOW_PUBLIC_IP",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Timeout",
+            "description": "The default timeout for all requests. If other timeouts are not set, this will be used.",
+            "env_variable": "DEFAULT_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Comet URL",
+            "description": "",
+            "env_variable": "COMET_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Comet Timeout",
+            "description": "The default timeout for all requests to the Comet API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_COMET_TIMOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Force Comet Hostname",
+            "description": "The following environment variable should only be set if you are using an internal URL for 'COMET_URL' e.g. http:\/\/comet:3000\/ and want the comet streams to be accessible from outside the network. i.e. you would set these to the public URL of the comet instance.",
+            "env_variable": "FORCE_COMET_HOSTNAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Force Comet Port",
+            "description": "The following environment variable should only be set if you are using an internal URL for 'COMET_URL' e.g. http:\/\/comet:3000\/ and want the comet streams to be accessible from outside the network. i.e. you would set these to the public URL of the comet instance.",
+            "env_variable": "FORCE_COMET_PORT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Force Comet Protocol",
+            "description": "The following environment variable should only be set if you are using an internal URL for 'COMET_URL' e.g. http:\/\/comet:3000\/ and want the comet streams to be accessible from outside the network. i.e. you would set these to the public URL of the comet instance.",
+            "env_variable": "FORCE_COMET_PROTOCOL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "in:,https,http",
+            "field_type": "text"
+        },
+        {
+            "name": "MediaFusion URL",
+            "description": "",
+            "env_variable": "MEDIAFUSION_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default MediaFusion Timeout",
+            "description": "The default timeout for all requests to the MediaFusion API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_MEDIAFUSION_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "MediaFusion Config Timeout",
+            "description": "The timeout applied to the \/encrypt-user-data endpoint of MediaFusion when auto generating the configuration.",
+            "env_variable": "MEDIAFUSION_CONFIG_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "MediaFusion API Password",
+            "description": "If you are using a self hosted instance of MediaFusion protected with a 'API_PASSWORD', you must provide it here. If you want to be able to make use of the auto configuration. If you are planning on overriding the URL at the config page, you can leave this empty.",
+            "env_variable": "MEDIAFUSION_API_PASSWORD",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Jackettio URL",
+            "description": "",
+            "env_variable": "JACKETTIO_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Jackett URL",
+            "description": "If using a self hosted instance, provide the Jackett URL here.",
+            "env_variable": "JACKETT_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Jackett API Key",
+            "description": "If using a self hosted instance, provide the Jackett API key here.",
+            "env_variable": "JACKETT_API_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Stremio Jackett Cache Enabled",
+            "description": "Whether to enable the cache option for auto configurations.",
+            "env_variable": "STREMIO_JACKETT_CACHE_ENABLED",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "in:,true,false",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Stremio Jackett Timeout",
+            "description": "The default timeout for all requests to the Stremio Jackett API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_STREMIO_JACKETT_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Easynews+ URL",
+            "description": "",
+            "env_variable": "EASYNEWS_PLUS_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Easynews+ Timeout",
+            "description": "The default timeout for all requests to the Easynews+ API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_EASYNEWS_PLUS_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Torrentio URL",
+            "description": "",
+            "env_variable": "TORRENTIO_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Torrentio Timeout",
+            "description": "The default timeout for all requests to the Torrentio API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_TORRENTIO_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Orion Stremio Addon URL",
+            "description": "",
+            "env_variable": "ORION_STREMIO_ADDON_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Orion Stremio Addon Timeout",
+            "description": "The default timeout for all requests to the Orion Stremio API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_ORION_STREMIO_ADDON_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Peerflix URL",
+            "description": "",
+            "env_variable": "PEERFLIX_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Peerflix Timeout",
+            "description": "The default timeout for all requests to the Peerflix API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_PEERFLIX_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "TorBox Stremio URL",
+            "description": "",
+            "env_variable": "TORBOX_STREMIO_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default TorBox Stremio Timeout",
+            "description": "The default timeout for all requests to the TorBox Stremio API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_TORBOX_STREMIO_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Easynews URL",
+            "description": "",
+            "env_variable": "EASYNEWS_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Easynews Timeout",
+            "description": "The default timeout for all requests to the Easynews API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_EASYNEWS_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Debridio URL",
+            "description": "",
+            "env_variable": "DEBRIDIO_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Debridio Timeout",
+            "description": "The default timeout for all requests to the Debridio API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_DEBRIDIO_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Default DDM Cast Timeout",
+            "description": "The default timeout for all requests to the DDM Cast API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_DDM_CAST_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Default Stremio GDrive Timeout",
+            "description": "The default timeout for all requests to the Stremio GDrive API. If left empty, either the DEFAULT_TIMEOUT or the overriden timeout will be used.",
+            "env_variable": "DEFAULT_STREMIO_GDRIVE_TIMEOUT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|integer",
+            "field_type": "text"
+        },
+        {
+            "name": "Domain",
+            "description": "IGNORE if you are not using Traefik. The domain that the addon will be hosted on, e.g. aiostreams.example.com.",
+            "env_variable": "DOMAIN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Let's Encrypt Email",
+            "description": "IGNORE if you are not using Traefik. The email to use for Let's Encrypt.",
+            "env_variable": "LETSENCRYPT_EMAIL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        }
+    ]
 }
