@@ -1,6 +1,6 @@
 # Lavalink Server
 
-## From their [Github](https://github.com/freyacodes/Lavalink)
+## From their [Github](https://github.com/lavalink-devs/Lavalink)
 
 Standalone audio sending node based on Lavaplayer and JDA-Audio. Allows for sending audio without it ever reaching any of your shards.
 
