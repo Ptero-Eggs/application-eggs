@@ -1,0 +1,72 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": "null"
+    },
+    "exported_at": "2025-07-02T15:31:09+02:00",
+    "name": "Teamspeak6 Server",
+    "author": "ptero@redbananaofficial.com",
+    "description": "TeamSpeak offers the ideal voice communication for gaming, education and training, internal business communication, and staying in touch with friends and family.",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/ptero-eggs\/yolks:debian": "ghcr.io\/ptero-eggs\/yolks:debian"
+    },
+    "file_denylist": [],
+    "startup": ".\/tsserver --accept-license=accept --write-config-file --default-voice-port={{SERVER_PORT}} --filetransfer-port={{FILETRANSFER_PORT}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"listening on 0.0.0.0:\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "cd \/mnt\/server\r\n\r\napt-get update\r\napt-get install -y jq bzip2\r\n\r\nver=\"$TS_VERSION\"\r\nif [ -z \"$ver\" ] || [ \"$ver\" = \"latest\" ]; then\r\n    json=$(curl -sSL https:\/\/api.github.com\/repos\/teamspeak\/teamspeak6-server\/releases\/latest)\r\nelse\r\n    json=$(curl -sSL https:\/\/api.github.com\/repos\/teamspeak\/teamspeak6-server\/releases\/tags\/$ver 2>\/dev\/null)\r\n    if echo \"$json\" | grep -q \"Not Found\"; then\r\n        altver=$(echo \"$ver\" | sed 's\/-\/\\\/\/')\r\n        json=$(curl -sSL https:\/\/api.github.com\/repos\/teamspeak\/teamspeak6-server\/releases\/tags\/$altver 2>\/dev\/null)\r\n    fi\r\nfi\r\n\r\nif echo \"$json\" | grep -q \"Not Found\"; then\r\n    echo \"Not found: $ver\"\r\n    exit 1\r\nfi\r\n\r\nurl=$(echo \"$json\" | jq -r '.assets | map(select((.name | contains(\"linux_amd64\")) and (.name | endswith(\".tar.bz2\"))))[0].browser_download_url')\r\n\r\nif [ -z \"$url\" ] || [ \"$url\" = \"null\" ]; then\r\n    echo \"Not found: $ver\"\r\n    exit 1\r\nfi\r\n\r\ncurl -sSL \"$url\" | tar xj --strip-components=1\r\necho \"Installed\"",
+            "container": "ghcr.io\/ptero-eggs\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Server Query Admin Password",
+            "description": "The password for the server query admin user.",
+            "env_variable": "TSSERVER_QUERY_ADMIN_PASSWORD",
+            "default_value": "ChangeMe",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "Server Version",
+            "description": "The version of Teamspeak 3 to use when running the server.",
+            "env_variable": "TS_VERSION",
+            "default_value": "latest",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Accept TServer License (required)",
+            "description": "This is for accepting the license",
+            "env_variable": "TSSERVER_LICENSE_ACCEPTED",
+            "default_value": "accept",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "nullable|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "File Transfer Port",
+            "description": "The Teamspeak file transfer port (can be changed)",
+            "env_variable": "FILETRANSFER_PORT",
+            "default_value": "30033",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:10",
+            "field_type": "text"
+        }
+    ]
+}
