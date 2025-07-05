@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": "null"
     },
-    "exported_at": "2025-07-02T15:31:09+02:00",
+    "exported_at": "2025-07-05T14:56:23+02:00",
     "name": "Teamspeak6 Server",
     "author": "ptero@redbananaofficial.com",
     "description": "TeamSpeak offers the ideal voice communication for gaming, education and training, internal business communication, and staying in touch with friends and family.",
@@ -13,7 +13,7 @@
         "ghcr.io\/ptero-eggs\/yolks:debian": "ghcr.io\/ptero-eggs\/yolks:debian"
     },
     "file_denylist": [],
-    "startup": ".\/tsserver --accept-license=accept --write-config-file --default-voice-port={{SERVER_PORT}} --filetransfer-port={{FILETRANSFER_PORT}}",
+    "startup": ".\/tsserver --default-voice-port={{SERVER_PORT}}",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"listening on 0.0.0.0:\"\r\n}",
@@ -60,12 +60,152 @@
         },
         {
             "name": "File Transfer Port",
-            "description": "The Teamspeak file transfer port (can be changed)",
-            "env_variable": "FILETRANSFER_PORT",
+            "description": "The Teamspeak file transfer port (can be changed).",
+            "env_variable": "TSSERVER_FILE_TRANSFER_PORT",
             "default_value": "30033",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|max:10",
+            "field_type": "text"
+        },
+        {
+            "name": "Enable SSH Query",
+            "description": "Enable the SSH query interface (set to 1 to enable).",
+            "env_variable": "TSSERVER_QUERY_SSH_ENABLED",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:0,1",
+            "field_type": "text"
+        },
+        {
+            "name": "SSH Query Port",
+            "description": "The port for the SSH query interface (can be changed).",
+            "env_variable": "TSSERVER_QUERY_SSH_PORT",
+            "default_value": "10022",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:1,65535",
+            "field_type": "text"
+        },
+        {
+            "name": "Enable HTTP Query",
+            "description": "Enable the HTTP query interface (set to 1 to enable).",
+            "env_variable": "TSSERVER_QUERY_HTTP_ENABLED",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:0,1",
+            "field_type": "text"
+        },
+        {
+            "name": "HTTP Query Port",
+            "description": "The port for the HTTP query interface (can be changed).",
+            "env_variable": "TSSERVER_QUERY_HTTP_PORT",
+            "default_value": "10080",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:1,65535",
+            "field_type": "text"
+        },
+        {
+            "name": "Enable HTTPS Query",
+            "description": "Enable the HTTPS query interface (set to 1 to enable).",
+            "env_variable": "TSSERVER_QUERY_HTTPS_ENABLED",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:0,1",
+            "field_type": "text"
+        },
+        {
+            "name": "HTTPS Query Port",
+            "description": "The port for the HTTPS query interface (can be changed).",
+            "env_variable": "TSSERVER_QUERY_HTTPS_PORT",
+            "default_value": "10443",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:1,65535",
+            "field_type": "text"
+        },
+        {
+            "name": "Enable S3 File Transfer",
+            "description": "Enable S3 file transfer (set to 1 to enable).",
+            "env_variable": "TSSERVER_S3FT_ENABLED",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:0,1",
+            "field_type": "text"
+        },
+        {
+            "name": "S3 Access Key",
+            "description": "S3 Access Key for file transfers.",
+            "env_variable": "TSSERVER_S3FT_ACCESS_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "S3 Secret Key",
+            "description": "S3 Secret Key for file transfers.",
+            "env_variable": "TSSERVER_S3FT_SECRET_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "S3 Bucket",
+            "description": "S3 Bucket name for file transfers.",
+            "env_variable": "TSSERVER_S3FT_BUCKET",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "S3 Domain",
+            "description": "S3 Domain\/endpoint for file transfers.",
+            "env_variable": "TSSERVER_S3FT_DOMAIN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "S3 Region",
+            "description": "S3 region for file transfers.",
+            "env_variable": "TSSERVER_S3FT_REGION",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "HTTPS Certificate Filename",
+            "description": "Place the certificate file in \/home\/container and enter the filename here, e.g; ts6_https_cert.pem",
+            "env_variable": "TSSERVER_QUERY_HTTPS_CERT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:255",
+            "field_type": "text"
+        },
+        {
+            "name": "HTTPS Private Key Filename",
+            "description": "Place the private key file in \/home\/container and enter the filename here, e.g: ts6_https_key.pem",
+            "env_variable": "TSSERVER_QUERY_HTTPS_PRIVATE_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:255",
             "field_type": "text"
         }
     ]
