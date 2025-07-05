@@ -26,3 +26,7 @@ You can use any available ports. The most important defaults are shown below:
 - **Query Interfaces**: Enable/disable additional query interfaces (SSH/HTTP/HTTPS) in the server variables.
 - **S3 File Transfer**: Leave S3 variables blank unless you wish use S3-compatible storage.
 - **Certificates**: For HTTPS query, upload your cert/key to `/home/container` and enter the filenames in their variables.
+
+### ARM64
+* The ARM64 egg may not perform as expected due to the AMD64 to ARM64 emulaton.
+
