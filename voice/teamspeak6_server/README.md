@@ -4,6 +4,8 @@
 
 TeamSpeak 6 is the next-generation voice communication platform for gaming and communities.
 
+### Notice
+TeamSpeak 6 Server is currently in **beta**. Expect frequent updates and potential instability
 
 ## Server Ports
 
@@ -11,9 +13,8 @@ You can use any available ports. The most important defaults are shown below:
 
 | Port                   | Default | Description                            |
 |------------------------|---------|------------------------                |
-| Voice Port             | 27015   | Main voice server port                 |
-| File Transfer Port     | 30033   | File transfers                         |
-| Query Port             | 10011   | (Optional/admin)                       |
+| Voice Port             | 9987    | Main voice server port                 |
+| File Transfer Port     | 30033   | File transfers (Optional/admin)                       |
 | Query SSH   | 10022    | Server Query SSH interface (Optional/admin)      |
 | Query HTTP  | 10080    | Server Query HTTP interface (Optional/admin)     |
 | Query HTTPS | 10443    | Server Query HTTPS interface (Optional/admin)    |
