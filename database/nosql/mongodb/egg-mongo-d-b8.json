@@ -1,0 +1,52 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-08-22T13:41:06+00:00",
+    "name": "MongoDB 8",
+    "author": "parker@parkervcp.com",
+    "description": "MongoDB Server is a general purpose, document-based, distributed database built for modern application developers and for the cloud era.",
+    "features": [],
+    "docker_images": {
+        "MongoDB_8": "ghcr.io\/ptero-eggs\/yolks:mongodb_8"
+    },
+    "file_denylist": [],
+    "startup": "mongod --fork --dbpath \/home\/container\/mongodb\/ --port ${SERVER_PORT} --bind_ip 0.0.0.0 --logpath \/home\/container\/logs\/mongo.log -f \/home\/container\/mongod.conf; until nc -z -v -w5 127.0.0.1 ${SERVER_PORT}; do echo 'Waiting for mongodb connection...'; sleep 5; done; mongosh --username ${MONGO_USER} --password ${MONGO_USER_PASS} --host 127.0.0.1:${SERVER_PORT} && mongosh --username ${MONGO_USER} --password ${MONGO_USER_PASS} --host 127.0.0.1:${SERVER_PORT}  --eval \"db.getSiblingDB('admin').shutdownServer()\"",
+    "config": {
+        "files": "{\r\n    \"mongod.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"#security:\": \"security: \\r\\n  authorization: \\\"enabled\\\"\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"child process started successfully\"\r\n}",
+        "logs": "{}",
+        "stop": "exit"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash \r\nif [ ! -d \/mnt\/server\/ ]; then\r\n    mkdir -p \/mnt\/server\/\r\nfi\r\n\r\ncd \/mnt\/server\/\r\n\r\ncp \/etc\/mongod.conf.orig \/mnt\/server\/mongod.conf\r\n\r\nmkdir mongodb logs\r\n\r\nmongod --port 27017 --dbpath \/mnt\/server\/mongodb\/ --logpath \/mnt\/server\/logs\/mongo.log --fork\r\n\r\nmongosh --eval \"db.getSiblingDB('admin').createUser({user: '${MONGO_USER}', pwd: '${MONGO_USER_PASS}', roles: ['root']})\"\r\n\r\nmongosh --eval \"db.getSiblingDB('admin').shutdownServer()\"\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
+            "container": "mongo:8-noble",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Mongo Admin Username",
+            "description": "The MongoDB Admin user",
+            "env_variable": "MONGO_USER",
+            "default_value": "admin",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Mongo Admin Password",
+            "description": "",
+            "env_variable": "MONGO_USER_PASS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        }
+    ]
+}
