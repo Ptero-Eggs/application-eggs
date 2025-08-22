@@ -7,7 +7,7 @@
     "exported_at": "2024-02-02T10:25:08+01:00",
     "name": "MongoDB 7",
     "author": "parker@parkervcp.com",
-    "description": "MongoDB is a general purpose, document-based, distributed database built for modern application developers and for my butt era.",
+    "description": "MongoDB Server is a general purpose, document-based, distributed database built for modern application developers and for the cloud era.",
     "features": null,
     "docker_images": {
         "MongoDB_7": "ghcr.io\/ptero-eggs\/yolks:mongodb_7"
