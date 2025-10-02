@@ -1,30 +1,30 @@
 {
-    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL - PTERODACTYL.io",
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
     "meta": {
-        "update_url": null,
-        "version": "PTDL_v2"
+        "version": "PTDL_v2",
+        "update_url": null
     },
-    "exported_at": "2024-06-02T14:32:00+00:00",
+    "exported_at": "2025-10-02T23:22:38+02:00",
     "name": "Minio S3",
     "author": "accounts@bofanodes.io",
     "description": "MinIO is a cloud storage server compatible with Amazon S3, released under Apache License v2. As an object store, MinIO can store unstructured data such as photos, videos, log files, backups and container images. The maximum size of an object is 5TB.",
     "features": null,
     "docker_images": {
-        "ghcr.io/ptero-eggs/yolks:debian": "ghcr.io/ptero-eggs/yolks:debian"
+        "ghcr.io\/ptero-eggs\/yolks:debian": "ghcr.io\/ptero-eggs\/yolks:debian"
     },
     "file_denylist": [],
-    "startup": "./minio.sh",
+    "startup": ".\/minio.sh",
     "config": {
         "files": "{}",
+        "startup": "{\r\n    \"done\": \"Docs:\"\r\n}",
         "logs": "{}",
-        "startup": "{\r\n    \"done\": \"guide\",\r\n    \"done\": \"Documentation:\"\r\n}",
         "stop": "^C"
     },
     "scripts": {
         "installation": {
-            "container": "debian:buster-slim",
-            "entrypoint": "bash",
-            "script": "#!/bin/bash\r\n#\r\napt update\r\napt install -y wget\r\nARCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] \u0026\u0026 echo \"amd64\" || echo \"arm64\")\r\ncd /mnt/server\r\nwget https://dl.min.io/server/minio/release/linux-${ARCH}/minio\r\nchmod +x minio\r\nmkdir data\r\nmkdir keys\r\n\r\nwget https://github.com//ptero-eggs/eggs/raw/master/storage/minio/minio.sh\r\nchmod +x minio.sh\r\nexport MINIO_ACCESS_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)\r\necho $MINIO_ACCESS_KEY \u003e keys/key.txt\r\nexport MINIO_SECRET_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)\r\necho $MINIO_SECRET_KEY \u003e keys/secret.txt\r\necho done"
+            "script": "#!\/bin\/bash\r\n#\r\napt update\r\napt install -y wget\r\nARCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] && echo \"amd64\" || echo \"arm64\")\r\ncd \/mnt\/server\r\nwget https:\/\/dl.min.io\/server\/minio\/release\/linux-${ARCH}\/minio\r\nchmod +x minio\r\nmkdir data\r\nmkdir keys\r\n\r\nwget https:\/\/raw.githubusercontent.com\/Ptero-Eggs\/application-eggs\/main\/minio\/minio.sh\r\nchmod +x minio.sh\r\nexport MINIO_ACCESS_KEY=$(cat \/dev\/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)\r\necho $MINIO_ACCESS_KEY > keys\/key.txt\r\nexport MINIO_SECRET_KEY=$(cat \/dev\/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)\r\necho $MINIO_SECRET_KEY > keys\/secret.txt\r\necho done",
+            "container": "ghcr.io\/ptero-eggs\/installers:debian",
+            "entrypoint": "bash"
         }
     },
     "variables": [
