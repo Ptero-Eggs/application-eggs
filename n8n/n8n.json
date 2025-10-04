@@ -1,0 +1,68 @@
+{
+  "_comment": "Pterodactyl n8n Egg",
+  "meta": {
+    "version": "PTDL_v2",
+    "update_url": null
+  },
+  "exported_at": "2025-08-15T00:00:00+07:00",
+  "name": "n8n",
+  "author": "ari@alfari.id",
+  "description": "n8n is a workflow automation tool. This egg runs n8n using a custom Docker image.",
+  "features": null,
+  "docker_images": {
+    "Custom GHCR Image": "ghcr.io/alfari24/pterodactyl-n8n:latest"
+  },
+  "file_denylist": [],
+  "startup": "/entrypoint.sh",
+  "config": {
+    "files": "{}",
+    "startup": "{\r\n    \"done\": \"Editor UI is now accessible\"\r\n}",
+    "logs": "{}",
+    "stop": "^C"
+  },
+  "scripts": {
+    "installation": {
+      "script": null,
+      "container": "alpine:latest",
+      "entrypoint": "ash"
+    }
+  },
+  "variables": [
+    {
+      "name": "N8N_ENCRYPTION_KEY",
+      "description": "Encryption key for sensitive data",
+      "env_variable": "N8N_ENCRYPTION_KEY",
+      "default_value": "",
+      "user_viewable": false,
+      "user_editable": true,
+      "rules": "nullable|string"
+    },
+    {
+      "name": "N8N_SECURE_COOKIE",
+      "description": "If cookies should be secure (requires HTTPS)",
+      "env_variable": "N8N_SECURE_COOKIE",
+      "default_value": "false",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|in:true,false"
+    },
+    {
+      "name": "N8N_PROTOCOL",
+      "description": "Protocol used for webhooks (http or https)",
+      "env_variable": "N8N_PROTOCOL",
+      "default_value": "http",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|in:http,https"
+    },
+    {
+      "name": "WEBHOOK_URL",
+      "description": "Public webhook URL (optional)",
+      "env_variable": "WEBHOOK_URL",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string"
+    }
+  ]
+}
