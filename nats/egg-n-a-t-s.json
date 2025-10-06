@@ -1,0 +1,82 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-10-06T11:40:39+00:00",
+    "name": "NATS",
+    "author": "eggs@purpleflaghosting.com",
+    "description": "NATS is a connective technology built for the ever increasingly hyper-connected world. It is a single technology that enables applications to securely communicate across any combination of cloud vendors, on-premise, edge, web and mobile, and devices. NATS consists of a family of open source products that are tightly integrated but can be deployed easily and independently. NATS is being used globally by thousands of companies, spanning use-cases including microservices, edge computing, mobile, IoT and can be used to augment or replace traditional messaging.",
+    "features": [],
+    "docker_images": {
+        "ghcr.io\/ptero-eggs\/yolks:alpine": "ghcr.io\/ptero-eggs\/yolks:alpine"
+    },
+    "file_denylist": [],
+    "startup": ".\/nats-server --port {{SERVER_PORT}} --store_dir $HOME\/data ${JETSTREAM:+-js} ${USERNAME:+--user \"{{USERNAME}}\"}  ${PASSWORD:+--pass \"{{PASSWORD}}\"}  ${AUTH_TOKEN:+--auth \"{{AUTH_TOKEN}}\"}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Server is ready\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\n# Detect OS architecture to download the correct binary\r\nOS_ARCH=$(uname -m)\r\ncase \"$OS_ARCH\" in\r\n    x86_64)\r\n        OS_ARCH=\"amd64\"\r\n        ;;\r\n    aarch64 | arm64)\r\n        OS_ARCH=\"arm64\"\r\n        ;;\r\n    *)\r\n        echo \"Unsupported architecture: $OS_ARCH\"\r\n        exit 1\r\n        ;;\r\nesac\r\necho \"Detected architecture: $OS_ARCH\"\r\n\r\n# Find the version and download URL from GitHub releases\r\nif [ -z \"$VERSION\" ] || [ \"$VERSION\" = \"latest\" ]; then\r\n    echo \"Downloading latest version...\"\r\n    RELEASE_INFO=$(curl -s https:\/\/api.github.com\/repos\/nats-io\/nats-server\/releases\/latest)\r\n    TAG_NAME=$(echo \"$RELEASE_INFO\" | jq -r .tag_name)\r\n    DOWNLOAD_URL=$(echo \"$RELEASE_INFO\" | jq -r \".assets[] | select(.name | test(\\\"nats-server-.*-linux-$OS_ARCH.*.tar.gz\\\")) | .browser_download_url\")\r\n    echo \"Latest version is $TAG_NAME\"\r\n    echo \"Download URL: $DOWNLOAD_URL\"\r\nelse\r\n    # Ensure VERSION starts with 'v'\r\n    VERSION=$(echo \"$VERSION\" | sed -E 's\/^v*\/\/')\r\n    VERSION=\"v$VERSION\"\r\n\r\n    echo \"Downloading version $VERSION...\"\r\n    RELEASE_INFO=$(curl -s https:\/\/api.github.com\/repos\/nats-io\/nats-server\/releases\/tags\/$VERSION)\r\n    if [ \"$(echo \"$RELEASE_INFO\" | jq -r .message)\" = \"Not Found\" ]; then\r\n        echo \"Version $VERSION not found.\"\r\n        exit 1\r\n    fi\r\n    TAG_NAME=$(echo \"$RELEASE_INFO\" | jq -r .tag_name)\r\n    DOWNLOAD_URL=$(echo \"$RELEASE_INFO\" | jq -r \".assets[] | select(.name | test(\\\"nats-server-.*-linux-$OS_ARCH.*.tar.gz\\\")) | .browser_download_url\")\r\n    echo \"Version is $TAG_NAME\"\r\n\r\nfi\r\n\r\nif [ -z \"$DOWNLOAD_URL\" ]; then\r\n    echo \"No suitable download URL found for version $VERSION and architecture $OS_ARCH.\"\r\n    exit 1\r\nfi\r\necho \"Download URL: $DOWNLOAD_URL\"\r\n\r\n# Download release\r\nwget \"$DOWNLOAD_URL\" -O \/tmp\/nats-server.tar.gz\r\n\r\n# Extract files\r\ntar -xzf \/tmp\/nats-server.tar.gz --strip-components=1 -C \/tmp\r\n\r\n# Copy nats-server binary and set permissions\r\ncp -f \/tmp\/nats-server \/mnt\/server\r\nchmod +x \/mnt\/server\/nats-server",
+            "container": "ghcr.io\/ptero-eggs\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Username",
+            "description": "User required for connections.",
+            "env_variable": "USERNAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Password",
+            "description": "Password required for connections.",
+            "env_variable": "PASSWORD",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Auth Token",
+            "description": "Authorization token required for connections. If set, Username\/Password based authentication will be disabled.",
+            "env_variable": "AUTH_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:255",
+            "field_type": "text"
+        },
+        {
+            "name": "Enable JetStream",
+            "description": "Enable JetStream functionality.",
+            "env_variable": "JETSTREAM",
+            "default_value": "1",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean|in:0,1",
+            "field_type": "text"
+        },
+        {
+            "name": "VERSION",
+            "description": "Version to install",
+            "env_variable": "VERSION",
+            "default_value": "latest",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}
