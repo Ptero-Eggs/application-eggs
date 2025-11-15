@@ -63,8 +63,8 @@ echo "Your New Secret Key is: $(tput setaf 2)$MINIO_ROOT_PASSWORD"
 echo "Your Old Access Key is: $(tput setaf 3)$MINIO_ROOT_USER_OLD"
 echo "Your Old Access Key is: $(tput setaf 3)$MINIO_ROOT_PASSWORD_OLD"
 echo "$(tput setaf 2)Booting..."
-./minio server data --console-address ":$SERVER_PORT"
+./minio server data --console-address ":$SERVER_PORT" --address ":$API_PORT"
 else
 echo "$(tput setaf 2)Booting..."
-./minio server data --console-address ":$SERVER_PORT"
+./minio server data --console-address ":$SERVER_PORT" --address ":$API_PORT"
 fi
