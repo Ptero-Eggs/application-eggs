@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2025-08-22T13:41:06+00:00",
+    "exported_at": "2025-10-13T13:21:53+00:00",
     "name": "MongoDB 8",
     "author": "parker@parkervcp.com",
     "description": "MongoDB Server is a general purpose, document-based, distributed database built for modern application developers and for the cloud era.",
@@ -13,7 +13,7 @@
         "MongoDB_8": "ghcr.io\/ptero-eggs\/yolks:mongodb_8"
     },
     "file_denylist": [],
-    "startup": "mongod --fork --dbpath \/home\/container\/mongodb\/ --port ${SERVER_PORT} --bind_ip 0.0.0.0 --logpath \/home\/container\/logs\/mongo.log -f \/home\/container\/mongod.conf; until nc -z -v -w5 127.0.0.1 ${SERVER_PORT}; do echo 'Waiting for mongodb connection...'; sleep 5; done; mongosh --username ${MONGO_USER} --password ${MONGO_USER_PASS} --host 127.0.0.1:${SERVER_PORT} && mongosh --username ${MONGO_USER} --password ${MONGO_USER_PASS} --host 127.0.0.1:${SERVER_PORT}  --eval \"db.getSiblingDB('admin').shutdownServer()\"",
+    "startup": "mongod --fork --dbpath \/home\/container\/mongodb\/ --port ${SERVER_PORT} --bind_ip 0.0.0.0 --logpath \/home\/container\/logs\/mongo.log -f \/home\/container\/mongod.conf; until nc -z -v -w5 127.0.0.1 ${SERVER_PORT}; do echo 'Waiting for mongodb connection...'; sleep 5; done; mongosh \"mongodb:\/\/${MONGO_USER}:${MONGO_USER_PASS}@127.0.0.1:${SERVER_PORT}\/admin\" && mongosh \"mongodb:\/\/${MONGO_USER}:${MONGO_USER_PASS}@127.0.0.1:${SERVER_PORT}\/admin\" --eval \"db.getSiblingDB('admin').shutdownServer()\"",
     "config": {
         "files": "{\r\n    \"mongod.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"#security:\": \"security: \\r\\n  authorization: \\\"enabled\\\"\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"child process started successfully\"\r\n}",
