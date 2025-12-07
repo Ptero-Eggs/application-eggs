@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2025-10-02T23:22:38+02:00",
+    "exported_at": "2025-10-26T13:21:49+00:00",
     "name": "Minio S3",
     "author": "accounts@bofanodes.io",
     "description": "MinIO is a cloud storage server compatible with Amazon S3, released under Apache License v2. As an object store, MinIO can store unstructured data such as photos, videos, log files, backups and container images. The maximum size of an object is 5TB.",
@@ -36,6 +36,16 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|in:normal,rotate,update",
+            "field_type": "text"
+        },
+        {
+            "name": "API Port",
+            "description": "The port to be used by the API",
+            "env_variable": "API_PORT",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:5",
             "field_type": "text"
         }
     ]
