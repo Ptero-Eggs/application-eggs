@@ -1,0 +1,66 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2026-08-01T18:14:02+00:00",
+    "name": "PHP Webserver Egg",
+    "author": "admin@gglvxd.net",
+    "description": "Pterodactyl Nginx PHP Egg",
+    "features": [],
+    "docker_images": {
+        "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.5-latest": "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.5-latest",
+        "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.4-latest": "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.4-latest",
+        "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.3-latest": "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.3-latest",
+        "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.2-latest": "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.2-latest",
+        "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.1-latest": "ghcr.io\/ym0t\/pterodactyl-nginx-egg:8.1-latest"
+    },
+    "file_denylist": [],
+    "startup": ".\/start.sh",
+    "config": {
+        "files": "{\r\n    \"core\/nginx\/conf.d\/default.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"    listen\": \"    listen {{server.build.default.port}};\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"webserver started\"\r\n}",
+        "logs": "{\r\n    \"location\": \"logs\/latest.log\"\r\n}",
+        "stop": "^C & ^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\nset -u\r\n\r\n# [SETUP] Install necessary packages, including git\r\necho -e \"[SETUP] Install packages\"\r\napt-get update -qq > \/dev\/null 2>&1\r\napt-get install -qq > \/dev\/null 2>&1 -y git wget perl perl-doc fcgiwrap pkg-php-tools\r\n\r\n\r\n#redis\r\napt-get install -qq -y php-redis\r\n\r\n# Change to server directory\r\ncd \/mnt\/server\r\n\r\n# [SETUP] Create necessary folders\r\necho -e \"[SETUP] Create folders\"\r\nmkdir -p logs\r\n\r\n# Clone only the required directory from the repository\r\necho \"[Git] Cloning webserver\/files from application-eggs repository.\"\r\ngit clone --filter=blob:none --sparse https:\/\/github.com\/pterodactyl\/application-eggs.git \/mnt\/server\/gtemp > \/dev\/null 2>&1 && echo \"[Git] Repository cloned successfully.\" || { echo \"[Git] Error: Repository clone failed.\"; exit 21; }\r\n\r\ncd \/mnt\/server\/gtemp\r\n\r\necho \"[Git] Checking out webserver\/files directory.\"\r\ngit sparse-checkout set webserver\/files > \/dev\/null 2>&1 || { echo \"[Git] Error: Sparse checkout failed.\"; exit 22; }\r\n\r\n# Copy the contents of webserver\/files into \/home\/container\r\necho \"[Git] Copying webserver\/files contents to \/home\/container.\"\r\ncp -r \/mnt\/server\/gtemp\/webserver\/files\/* \/mnt\/server || { echo \"[Git] Error: Copying files failed.\"; exit 23; }\r\n\r\necho \"[Git] Files copied successfully.\"\r\n\r\nchmod +x \/mnt\/server\/start.sh\r\nchmod +x \/mnt\/server\/core\/nginx.sh\r\nchmod +x \/mnt\/server\/core\/composer.sh\r\n\r\n# Remove the temporary cloned repository\r\nrm -rf \/mnt\/server\/gtemp\r\n\r\n#create temporary directory\r\nmkdir -p \/mnt\/server\/core\/tmp\r\n\r\n# Check if WordPress should be installed\r\nif [ \"${WORDPRESS}\" == \"true\" ] || [ \"${WORDPRESS}\" == \"1\" ]; then\r\n    echo \"[SETUP] Install WordPress\"\r\n    cd \/mnt\/server\/www\r\n    wget -q http:\/\/wordpress.org\/latest.tar.gz > \/dev\/null 2>&1 || { echo \"[SETUP] Error: Downloading WordPress failed.\"; exit 16; }\r\n    tar xzf latest.tar.gz > \/dev\/null 2>&1\r\n    mv wordpress\/* .\r\n    rm -rf wordpress latest.tar.gz\r\n    echo \"[SETUP] WordPress installed - http:\/\/ip:port\/wp-admin\"\r\nfi\r\n\r\n\r\necho -e \"[DONE] Everything has been installed successfully\"\r\necho -e \"[INFO] You can now start the nginx web server\"",
+            "container": "debian:bookworm-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Wordpress",
+            "description": "Enable or disable Wordpress \r\n\r\n0 = false (default) \r\n1 = true",
+            "env_variable": "WORDPRESS",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean",
+            "field_type": "text"
+        },
+        {
+            "name": "Enable Composer Module",
+            "description": "Enable or disable Composer package installation",
+            "env_variable": "COMPOSER_STATUS",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean",
+            "field_type": "text"
+        },
+        {
+            "name": "Composer Packages",
+            "description": "Space-separated list of Composer packages to install",
+            "env_variable": "COMPOSER_MODULES",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        }
+    ]
+}
