@@ -5,7 +5,7 @@ trap 'echo "[composer] Error on line $LINENO"' ERR
 # Configuration via environment variables
 COMPOSER_STATUS="${COMPOSER_STATUS:-false}"
 COMPOSER_MODULES="${COMPOSER_MODULES:-}"
-CACHE_DIR="${COMPOSER_CACHE_DIR:-/home/container/.cache/composer}"
+CACHE_DIR="${COMPOSER_CACHE_DIR:-/home/container/core/.cache/composer}"
 WWW_DIR="${COMPOSER_WWW_DIR:-/home/container/www}"
 COMPOSER_JSON="$WWW_DIR/composer.json"
 
