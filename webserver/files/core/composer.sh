@@ -34,9 +34,8 @@ if [[ -f "$COMPOSER_JSON" ]]; then
 # Fallback to COMPOSER_MODULES if composer.json is missing
 elif [[ -n "$COMPOSER_MODULES" ]]; then
   echo "[Composer] composer.json not found. Installing from COMPOSER_MODULES: $COMPOSER_MODULES"
-  composer require $COMPOSER_MODULES \
-    --working-dir="$WWW_DIR" \
-    --no-interaction
+   read -r -a modules <<< "$COMPOSER_MODULES"
+   composer require "${modules[@]}" --working-dir="$WWW_DIR" --no-interaction
   echo "[Composer] Composer module installation complete"
 
 # No installation source found
